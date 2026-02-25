@@ -1,7 +1,9 @@
 package es.um.atica.umufly.vuelos.adaptors.api.rest.v2;
 
+import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,33 +16,50 @@ import es.um.atica.umufly.vuelos.adaptors.api.rest.AuthService;
 import es.um.atica.umufly.vuelos.adaptors.api.rest.Constants;
 import es.um.atica.umufly.vuelos.adaptors.api.rest.v2.dto.VueloDTO;
 import es.um.atica.umufly.vuelos.application.dto.VueloAmpliadoDTO;
-import es.um.atica.umufly.vuelos.application.usecase.vuelos.GestionarVuelosUseCase;
+import es.um.atica.umufly.vuelos.application.usecase.vuelos.listarvuelos.ListarVuelosQuery;
+import es.um.atica.umufly.vuelos.application.usecase.vuelos.listarvuelos.ListarVuelosQueryHandler;
+import es.um.atica.umufly.vuelos.application.usecase.vuelos.obtenervuelos.ObtenerVueloQuery;
+import es.um.atica.umufly.vuelos.application.usecase.vuelos.obtenervuelos.ObtenerVueloQueryHandler;
 import es.um.atica.umufly.vuelos.domain.model.DocumentoIdentidad;
 
 @RestController
 public class VuelosEndpointV2 {
 
-	private final GestionarVuelosUseCase gestionarVuelosUseCase;
+	private ListarVuelosQueryHandler listarVuelosQueryHandler;
+	private ObtenerVueloQueryHandler obtenerVueloQueryHandler;
+
 	private final VuelosModelAssemblerV2 vuelosModelAssemblerV2;
 	private final PagedResourcesAssembler<VueloAmpliadoDTO> pagedResourcesAssembler;
 	private final AuthService authService;
 
-	public VuelosEndpointV2( GestionarVuelosUseCase gestionarVuelosUseCase, VuelosModelAssemblerV2 vuelosModelAssemblerV2, PagedResourcesAssembler<VueloAmpliadoDTO> pagedResourcesAssembler, AuthService authService ) {
-		this.gestionarVuelosUseCase = gestionarVuelosUseCase;
+	public VuelosEndpointV2( ListarVuelosQueryHandler listarVuelosQueryHandler, ObtenerVueloQueryHandler obtenerVueloQueryHandler, VuelosModelAssemblerV2 vuelosModelAssemblerV2, PagedResourcesAssembler<VueloAmpliadoDTO> pagedResourcesAssembler,
+			AuthService authService ) {
+		this.listarVuelosQueryHandler = listarVuelosQueryHandler;
+		this.obtenerVueloQueryHandler = obtenerVueloQueryHandler;
 		this.vuelosModelAssemblerV2 = vuelosModelAssemblerV2;
 		this.pagedResourcesAssembler = pagedResourcesAssembler;
 		this.authService = authService;
 	}
 
 	@GetMapping( Constants.PRIVATE_PREFIX + Constants.API_VERSION_2 + Constants.RESOURCE_VUELOS )
-	public CollectionModel<VueloDTO> getVuelos( @RequestHeader( name = "UMU-Usuario", required = true ) String usuario, @RequestParam( name = "page", defaultValue = "0" ) int page, @RequestParam( name = "size", defaultValue = "25" ) int size ) {
+	public CollectionModel<VueloDTO> getVuelos( @RequestHeader( name = "UMU-Usuario", required = true ) String usuario, @RequestParam( name = "page", defaultValue = "0" ) int page, @RequestParam( name = "size", defaultValue = "25" ) int size )
+			throws Exception {
 		DocumentoIdentidad documento = authService.parseUserHeader( usuario );
-		return pagedResourcesAssembler.toModel( gestionarVuelosUseCase.listarVuelos( documento, page, size ), vuelosModelAssemblerV2 );
+
+		Optional<Page<VueloAmpliadoDTO>> lista = listarVuelosQueryHandler.handle( ListarVuelosQuery.of( documento, page, size ) );
+		if ( lista.isPresent() ) {
+			return pagedResourcesAssembler.toModel( lista.get(), vuelosModelAssemblerV2 );
+		}
+		return null;
 	}
 
 	@GetMapping( Constants.PRIVATE_PREFIX + Constants.API_VERSION_2 + Constants.RESOURCE_VUELOS + Constants.ID_VUELOS )
-	public VueloDTO getVuelo( @RequestHeader( name = "UMU-Usuario", required = true ) String usuario, @PathVariable( "idVuelo" ) UUID idVuelo ) {
-		return vuelosModelAssemblerV2.toModel( gestionarVuelosUseCase.obtenerVuelo( authService.parseUserHeader( usuario ), idVuelo ) );
+	public VueloDTO getVuelo( @RequestHeader( name = "UMU-Usuario", required = true ) String usuario, @PathVariable( "idVuelo" ) UUID idVuelo ) throws Exception {
+		Optional<VueloAmpliadoDTO> vuelo = obtenerVueloQueryHandler.handle( ObtenerVueloQuery.of( authService.parseUserHeader( usuario ), idVuelo ) );
+		if ( vuelo.isPresent() ) {
+			return vuelosModelAssemblerV2.toModel( vuelo.get() );
+		}
+		return null;
 	}
 
 }
