@@ -20,13 +20,14 @@ import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.mapper.JpaPersistenceM
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.repository.JpaReservaVueloRepository;
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.repository.JpaReservaVueloViewRepository;
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.repository.JpaVueloRepository;
-import es.um.atica.umufly.vuelos.application.port.ReservasVueloRepository;
+import es.um.atica.umufly.vuelos.application.port.ReservasVueloReadRepository;
+import es.um.atica.umufly.vuelos.application.port.ReservasVueloWriteRepository;
 import es.um.atica.umufly.vuelos.domain.model.DocumentoIdentidad;
 import es.um.atica.umufly.vuelos.domain.model.Pasajero;
 import es.um.atica.umufly.vuelos.domain.model.ReservaVuelo;
 
 @Component
-public class ReservasVueloPersistenceAdapter implements ReservasVueloRepository {
+public class ReservasVueloPersistenceAdapter implements ReservasVueloReadRepository, ReservasVueloWriteRepository {
 
 	private final JpaReservaVueloRepository jpaReservaVueloRepository;
 	private final JpaReservaVueloViewRepository jpaReservaVueloViewRepository;
@@ -56,7 +57,7 @@ public class ReservasVueloPersistenceAdapter implements ReservasVueloRepository 
 		ReservaVueloViewEntity reservaPasajero = jpaReservaVueloViewRepository.findByPasajerosTipoDocumentoAndPasajerosNumeroDocumentoAndIdVueloAndEstadoReservaIn( JpaPersistenceMapper.tipoDocumentoToEntity( documentoIdentidadPasajero.tipo() ),
 				documentoIdentidadPasajero.identificador(),
 				vueloId.toString(), Arrays.asList( EstadoReservaVueloEnum.P, EstadoReservaVueloEnum.A ) );
-		return UUID.fromString( reservaPasajero.getIdVuelo() );
+		return reservaPasajero != null ? UUID.fromString( reservaPasajero.getIdVuelo() ) : null;
 	}
 
 	@Override
@@ -83,14 +84,18 @@ public class ReservasVueloPersistenceAdapter implements ReservasVueloRepository 
 	}
 
 	@Override
-	public ReservaVuelo findReservaById( UUID idReserva ) {
-		return jpaReservaVueloRepository.findById( idReserva.toString() ).map( r -> JpaPersistenceMapper.reservaVueloToModel( r, jpaVueloRepository.findById( r.getIdVuelo() ).orElseGet( null ) ) )
-				.orElseThrow( () -> new IllegalStateException( "Vuelo no encontrado" ) );
+	public ReservaVuelo findReservaById( DocumentoIdentidad documentoIdentidad, UUID idReserva ) {
+		return jpaReservaVueloViewRepository
+				.findByIdAndPasajerosTipoDocumentoAndPasajerosNumeroDocumentoOrTipoDocumentoTitularAndNumeroDocumentoTitular( idReserva.toString(), JpaPersistenceMapper.tipoDocumentoToEntity( documentoIdentidad.tipo() ), documentoIdentidad.identificador() )
+				.map( r -> JpaPersistenceMapper.reservaVueloToModel( r, jpaVueloRepository.findById( r.getIdVuelo() ).orElseGet( null ) ) )
+				.orElseThrow( () -> new IllegalStateException( "Reserva no encontrado" ) );
 	}
 
 	@Override
-	public Page<ReservaVuelo> findReservas( int pagina, int tamanioPagina ) {
-		return jpaReservaVueloRepository.findAll( PageRequest.of( pagina, tamanioPagina ) ).map( r -> JpaPersistenceMapper.reservaVueloToModel( r, jpaVueloRepository.findById( r.getIdVuelo() ).orElseGet( null ) ) );
+	public Page<ReservaVuelo> findReservas( DocumentoIdentidad documentoIdentidad, int pagina, int tamanioPagina ) {
+		return jpaReservaVueloViewRepository.findByPasajerosTipoDocumentoAndPasajerosNumeroDocumentoOrTipoDocumentoTitularAndNumeroDocumentoTitular( JpaPersistenceMapper.tipoDocumentoToEntity( documentoIdentidad.tipo() ), documentoIdentidad.identificador(),
+				PageRequest.of( pagina, tamanioPagina ) )
+				.map( r -> JpaPersistenceMapper.reservaVueloToModel( r, jpaVueloRepository.findById( r.getIdVuelo() ).orElseGet( null ) ) );
 	}
 
 	@Override
