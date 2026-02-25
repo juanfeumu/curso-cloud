@@ -28,24 +28,12 @@ public class ListarVuelosQuery extends Query<Optional<Page<VueloAmpliadoDTO>>> {
 		return documentoIdentidadPasajero;
 	}
 
-	public void setDocumentoIdentidadPasajero( DocumentoIdentidad documentoIdentidadPasajero ) {
-		this.documentoIdentidadPasajero = documentoIdentidadPasajero;
-	}
-
 	public Integer getPagina() {
 		return pagina;
 	}
 
-	public void setPagina( Integer pagina ) {
-		this.pagina = pagina;
-	}
-
 	public Integer getTamanioPagina() {
 		return tamanioPagina;
-	}
-
-	public void setTamanioPagina( Integer tamanioPagina ) {
-		this.tamanioPagina = tamanioPagina;
 	}
 
 }
