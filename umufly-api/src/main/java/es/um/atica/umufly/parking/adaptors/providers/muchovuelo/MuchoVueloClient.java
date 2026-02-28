@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.dto.ReservaParkingDTO;
+import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.dto.ReservaParkingProviderDTO;
 import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.dto.TipoDocumentoDTO;
 import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.exception.MuchoVueloClientException;
 import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.mapper.MuchoVueloMapper;
@@ -28,10 +28,10 @@ public class MuchoVueloClient {
 		this.restClientMuchoVuelo = restClientMuchoVuelo;
 	}
 
-	public ReservaParkingDTO creaReservaParking( ReservaParkingDTO reserva ) {
+	public ReservaParkingProviderDTO creaReservaParking( ReservaParkingProviderDTO reserva ) {
 		String headerUsuario = getHeaderUsuario( reserva.getTipoDocumentoCliente(), reserva.getNumeroDocumentoCliente() );
 		try {
-			return restClientMuchoVuelo.post().uri( URI_RESERVAS_VUELO_V1 ).header( API_HEADER_USUARIO, headerUsuario ).body( reserva ).retrieve().body( ReservaParkingDTO.class );
+			return restClientMuchoVuelo.post().uri( URI_RESERVAS_VUELO_V1 ).header( API_HEADER_USUARIO, headerUsuario ).body( reserva ).retrieve().body( ReservaParkingProviderDTO.class );
 		} catch ( org.springframework.web.client.RestClientResponseException ex ) {
 			throw new MuchoVueloClientException( "MuchoVueloAPI - Error " + ex.getStatusText() + ": " + ex.getResponseBodyAsString(), ex );
 		}

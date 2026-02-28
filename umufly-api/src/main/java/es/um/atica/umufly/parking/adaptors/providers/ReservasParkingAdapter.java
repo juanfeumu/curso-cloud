@@ -5,7 +5,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.MuchoVueloClient;
-import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.dto.ReservaParkingDTO;
+import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.dto.ReservaParkingProviderDTO;
 import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.mapper.MuchoVueloMapper;
 import es.um.atica.umufly.parking.application.port.ReservasParkingWritePort;
 import es.um.atica.umufly.parking.domain.model.DocumentoIdentidad;
@@ -22,7 +22,7 @@ public class ReservasParkingAdapter implements ReservasParkingWritePort {
 
 	@Override
 	public UUID formalizarReservaParking( ReservaParking reserva ) {
-		ReservaParkingDTO reservaParkingMuchoVuelo = muchoVueloClient.creaReservaParking( MuchoVueloMapper.reservaToDTO( reserva ) );
+		ReservaParkingProviderDTO reservaParkingMuchoVuelo = muchoVueloClient.creaReservaParking( MuchoVueloMapper.reservaToDTO( reserva ) );
 		return reservaParkingMuchoVuelo.getId();
 	}
 

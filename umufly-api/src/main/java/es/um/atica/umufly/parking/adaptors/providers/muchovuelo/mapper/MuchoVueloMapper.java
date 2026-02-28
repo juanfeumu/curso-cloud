@@ -1,7 +1,7 @@
 package es.um.atica.umufly.parking.adaptors.providers.muchovuelo.mapper;
 
 import es.um.atica.umufly.parking.adaptors.persistence.jpa.entity.TipoEstacionamientoEnum;
-import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.dto.ReservaParkingDTO;
+import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.dto.ReservaParkingProviderDTO;
 import es.um.atica.umufly.parking.adaptors.providers.muchovuelo.dto.TipoDocumentoDTO;
 import es.um.atica.umufly.parking.domain.model.ReservaParking;
 import es.um.atica.umufly.parking.domain.model.TipoDocumento;
@@ -13,9 +13,9 @@ public final class MuchoVueloMapper {
 		throw new IllegalStateException( "Clase de conversión" );
 	}
 
-	public static ReservaParkingDTO reservaToDTO( ReservaParking reserva ) {
+	public static ReservaParkingProviderDTO reservaToDTO( ReservaParking reserva ) {
 
-		ReservaParkingDTO dto = new ReservaParkingDTO();
+		ReservaParkingProviderDTO dto = new ReservaParkingProviderDTO();
 
 		dto.setEstadoReserva( reserva.getEstado() );
 		dto.setFechaInicio( reserva.getPeriodoEstacionamiento().inicio() );

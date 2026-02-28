@@ -54,7 +54,7 @@ public class ReservaParkingViewEntity {
 	private TipoEstacionamientoEnum tipo;
 
 	@NotNull
-	@Column( name = "importe", nullable = false )
+	@Column( name = "IMPORTE", nullable = false )
 	private double importe;
 
 	public String getId() {

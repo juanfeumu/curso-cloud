@@ -41,7 +41,7 @@ public class JpaPersistenceMapper {
 		};
 	}
 
-	public static TipoEstacionamiento entityToTipoEstacionamiento( TipoEstacionamientoEnum tipoEstacionamiento ) {
+	private static TipoEstacionamiento entityToTipoEstacionamiento( TipoEstacionamientoEnum tipoEstacionamiento ) {
 		return switch ( tipoEstacionamiento ) {
 			case C -> TipoEstacionamiento.CORTA_DURACION;
 			case L -> TipoEstacionamiento.LARGA_DURACION;
@@ -49,7 +49,7 @@ public class JpaPersistenceMapper {
 		};
 	}
 
-	public static TipoDocumento tipoDocumentoEntityToModel( TipoDocumentoEnum tipoDocumento ) {
+	private static TipoDocumento tipoDocumentoEntityToModel( TipoDocumentoEnum tipoDocumento ) {
 		return switch ( tipoDocumento ) {
 			case N -> TipoDocumento.NIF;
 			case E -> TipoDocumento.NIE;
@@ -58,7 +58,7 @@ public class JpaPersistenceMapper {
 		};
 	}
 
-	public static EstadoReservaParkingEnum estadoReservaToEntity( EstadoReservaParking estadoReservaParking ) {
+	private static EstadoReservaParkingEnum estadoReservaToEntity( EstadoReservaParking estadoReservaParking ) {
 		return switch ( estadoReservaParking ) {
 			case ACTIVA -> EstadoReservaParkingEnum.A;
 			case CANCELADA -> EstadoReservaParkingEnum.X;
@@ -66,7 +66,7 @@ public class JpaPersistenceMapper {
 		};
 	}
 
-	public static EstadoReservaParking estadoReservaEntityToModel( EstadoReservaParkingEnum estadoReservaParking ) {
+	private static EstadoReservaParking estadoReservaEntityToModel( EstadoReservaParkingEnum estadoReservaParking ) {
 		return switch ( estadoReservaParking ) {
 			case A -> EstadoReservaParking.ACTIVA;
 			case X -> EstadoReservaParking.CANCELADA;
@@ -84,18 +84,6 @@ public class JpaPersistenceMapper {
 		r.setEstadoReserva( estadoReservaToEntity( rp.getEstado() ) );
 		return r;
 	}
-
-	// public static ReservaParkingViewEntity reservaParkingViewToEntity( ReservaParking rr, LocalDateTime fechaCreacion,
-	// LocalDateTime fechaModificacion ) {
-	// ReservaParkingViewEntity r = new ReservaParkingViewEntity();
-	// r.setId( rr.getId().toString() );
-	// r.setTipoDocumentoTitular( tipoDocumentoToEntity( rr.getIdentificadorTitular().tipo() ) );
-	// r.setNumeroDocumentoTitular( rr.getIdentificadorTitular().identificador() );
-	// r.setFechaCreacion( fechaCreacion );
-	// r.setEstadoReserva( estadoReservaToEntity( rr.getEstado() ) );
-	// r.addPasajero( pasajeroViewToEntity( rr.getPasajero() ) );
-	// return r;
-	// }
 
 	public static ReservaParking reservaParkingToModel( ReservaParkingViewEntity r, TipoEstacionamientoViewExtEntity estacionamiento ) {
 		return ReservaParking.of( UUID.fromString( r.getId() ), new DocumentoIdentidad( tipoDocumentoEntityToModel( r.getTipoDocumentoCliente() ), r.getNumeroDocumentoCliente() ),

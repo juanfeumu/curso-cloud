@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import es.um.atica.umufly.parking.adaptors.persistence.jpa.entity.TipoEstacionamientoEnum;
 import es.um.atica.umufly.parking.domain.model.EstadoReservaParking;
 
-public class ReservaParkingDTO {
+public class ReservaParkingProviderDTO {
 
 	private UUID id;
 
