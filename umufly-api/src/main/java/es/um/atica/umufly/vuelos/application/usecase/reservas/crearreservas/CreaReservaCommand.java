@@ -1,4 +1,4 @@
-package es.um.atica.umufly.vuelos.application.usecase.reservas.creareserva;
+package es.um.atica.umufly.vuelos.application.usecase.reservas.crearreservas;
 
 import java.util.UUID;
 

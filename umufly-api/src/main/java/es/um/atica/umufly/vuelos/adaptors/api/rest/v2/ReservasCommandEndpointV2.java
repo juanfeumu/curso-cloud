@@ -13,9 +13,10 @@ import es.um.atica.umufly.vuelos.adaptors.api.rest.AuthService;
 import es.um.atica.umufly.vuelos.adaptors.api.rest.Constants;
 import es.um.atica.umufly.vuelos.adaptors.api.rest.v2.dto.ReservaVueloDTO;
 import es.um.atica.umufly.vuelos.adaptors.api.rest.v2.mapper.ApiRestV2Mapper;
-import es.um.atica.umufly.vuelos.application.usecase.reservas.GestionarReservaUseCase;
-import es.um.atica.umufly.vuelos.application.usecase.reservas.creareserva.CreaReservaCommand;
-import es.um.atica.umufly.vuelos.application.usecase.reservas.creareserva.CreaReservaQueryHandler;
+import es.um.atica.umufly.vuelos.application.usecase.reservas.cancelarreservas.CancelarReservasCommand;
+import es.um.atica.umufly.vuelos.application.usecase.reservas.cancelarreservas.CancelarReservasCommandHandler;
+import es.um.atica.umufly.vuelos.application.usecase.reservas.crearreservas.CreaReservaCommand;
+import es.um.atica.umufly.vuelos.application.usecase.reservas.crearreservas.CreaReservaQueryHandler;
 import es.um.atica.umufly.vuelos.domain.model.ClaseAsientoReserva;
 import jakarta.validation.Valid;
 
@@ -23,14 +24,14 @@ import jakarta.validation.Valid;
 public class ReservasCommandEndpointV2 {
 
 	private final CreaReservaQueryHandler creaReservaQueryHandler;
-	private final GestionarReservaUseCase gestionarReservaUseCase;
+	private final CancelarReservasCommandHandler cancelarReservasCommandHandler;
 	private final ReservasModelAssemblerV2 reservasModelAssembler;
 	private final AuthService authService;
 
-	public ReservasCommandEndpointV2( CreaReservaQueryHandler creaReservaQueryHandler, GestionarReservaUseCase gestionarReservaUseCase, ReservasModelAssemblerV2 reservasModelAssembler,
+	public ReservasCommandEndpointV2( CreaReservaQueryHandler creaReservaQueryHandler, CancelarReservasCommandHandler cancelarReservasCommandHandler, ReservasModelAssemblerV2 reservasModelAssembler,
 			AuthService authService ) {
 		this.creaReservaQueryHandler = creaReservaQueryHandler;
-		this.gestionarReservaUseCase = gestionarReservaUseCase;
+		this.cancelarReservasCommandHandler = cancelarReservasCommandHandler;
 		this.reservasModelAssembler = reservasModelAssembler;
 		this.authService = authService;
 	}
@@ -42,8 +43,8 @@ public class ReservasCommandEndpointV2 {
 	}
 
 	@DeleteMapping( Constants.PRIVATE_PREFIX + Constants.API_VERSION_2 + Constants.RESOURCE_RESERVAS_VUELO + Constants.ID_RESERVA )
-	public ReservaVueloDTO cancelarReserva( @RequestHeader( name = "UMU-Usuario", required = true ) String usuario, @PathVariable( "idReserva" ) UUID idReserva ) {
-		return reservasModelAssembler.toModel( gestionarReservaUseCase.cancelarReserva( authService.parseUserHeader( usuario ), idReserva ) );
+	public ReservaVueloDTO cancelarReserva( @RequestHeader( name = "UMU-Usuario", required = true ) String usuario, @PathVariable( "idReserva" ) UUID idReserva ) throws Exception {
+		return reservasModelAssembler.toModel( cancelarReservasCommandHandler.handle( CancelarReservasCommand.of( authService.parseUserHeader( usuario ), idReserva ) ) );
 	}
 
 }
