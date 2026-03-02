@@ -16,19 +16,19 @@ import es.um.atica.umufly.vuelos.adaptors.api.rest.v2.mapper.ApiRestV2Mapper;
 import es.um.atica.umufly.vuelos.application.usecase.reservas.cancelarreservas.CancelarReservasCommand;
 import es.um.atica.umufly.vuelos.application.usecase.reservas.cancelarreservas.CancelarReservasCommandHandler;
 import es.um.atica.umufly.vuelos.application.usecase.reservas.crearreservas.CreaReservaCommand;
-import es.um.atica.umufly.vuelos.application.usecase.reservas.crearreservas.CreaReservaQueryHandler;
+import es.um.atica.umufly.vuelos.application.usecase.reservas.crearreservas.CreaReservaCommandHandler;
 import es.um.atica.umufly.vuelos.domain.model.ClaseAsientoReserva;
 import jakarta.validation.Valid;
 
 @RestController
 public class ReservasCommandEndpointV2 {
 
-	private final CreaReservaQueryHandler creaReservaQueryHandler;
+	private final CreaReservaCommandHandler creaReservaQueryHandler;
 	private final CancelarReservasCommandHandler cancelarReservasCommandHandler;
 	private final ReservasModelAssemblerV2 reservasModelAssembler;
 	private final AuthService authService;
 
-	public ReservasCommandEndpointV2( CreaReservaQueryHandler creaReservaQueryHandler, CancelarReservasCommandHandler cancelarReservasCommandHandler, ReservasModelAssemblerV2 reservasModelAssembler,
+	public ReservasCommandEndpointV2( CreaReservaCommandHandler creaReservaQueryHandler, CancelarReservasCommandHandler cancelarReservasCommandHandler, ReservasModelAssemblerV2 reservasModelAssembler,
 			AuthService authService ) {
 		this.creaReservaQueryHandler = creaReservaQueryHandler;
 		this.cancelarReservasCommandHandler = cancelarReservasCommandHandler;

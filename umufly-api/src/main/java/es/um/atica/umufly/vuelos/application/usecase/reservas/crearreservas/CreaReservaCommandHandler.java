@@ -15,7 +15,7 @@ import es.um.atica.umufly.vuelos.domain.model.ReservaVuelo;
 import es.um.atica.umufly.vuelos.domain.model.Vuelo;
 
 @Component
-public class CreaReservaQueryHandler implements SyncCommandHandler<ReservaVuelo, CreaReservaCommand> {
+public class CreaReservaCommandHandler implements SyncCommandHandler<ReservaVuelo, CreaReservaCommand> {
 
 	private final VuelosReadRepository vuelosReadRepository;
 	private final ReservasVueloReadRepository reservasVueloReadRepository;
@@ -23,7 +23,7 @@ public class CreaReservaQueryHandler implements SyncCommandHandler<ReservaVuelo,
 	private final FormalizacionReservasVueloWritePort formalizacionReservasVueloPort;
 	private final Clock clock;
 
-	public CreaReservaQueryHandler( VuelosReadRepository vuelosRepository, ReservasVueloReadRepository reservasVueloRepository, ReservasVueloWriteRepository reservasVueloWriteRepository, FormalizacionReservasVueloWritePort formalizacionReservasVueloPort,
+	public CreaReservaCommandHandler( VuelosReadRepository vuelosRepository, ReservasVueloReadRepository reservasVueloRepository, ReservasVueloWriteRepository reservasVueloWriteRepository, FormalizacionReservasVueloWritePort formalizacionReservasVueloPort,
 			Clock clock ) {
 		this.vuelosReadRepository = vuelosRepository;
 		this.reservasVueloReadRepository = reservasVueloRepository;
