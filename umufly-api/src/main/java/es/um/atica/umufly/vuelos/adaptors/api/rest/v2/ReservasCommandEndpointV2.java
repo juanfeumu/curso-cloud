@@ -18,6 +18,7 @@ import es.um.atica.umufly.vuelos.application.usecase.cancelarreservas.CancelarRe
 import es.um.atica.umufly.vuelos.application.usecase.crearreservas.CrearReservaCommand;
 import es.um.atica.umufly.vuelos.application.usecase.crearreservas.CrearReservaCommandHandler;
 import es.um.atica.umufly.vuelos.domain.model.ClaseAsientoReserva;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
 @RestController
@@ -36,6 +37,7 @@ public class ReservasCommandEndpointV2 {
 		this.authService = authService;
 	}
 
+	@Operation( summary = "Crea una reserva de vuelos", description = "Devuelve la lista de vuelos paginada" )
 	@PostMapping( Constants.PRIVATE_PREFIX + Constants.API_VERSION_2 + Constants.RESOURCE_RESERVAS_VUELO )
 	public ReservaVueloDTO creaReserva( @RequestHeader( name = "UMU-Usuario", required = true ) String usuario, @RequestBody @Valid ReservaVueloDTO nuevaReservaVuelo ) throws Exception {
 		return reservasModelAssembler.toModel( crearReservaCommandHandler.handle( CrearReservaCommand.of( authService.parseUserHeader( usuario ), nuevaReservaVuelo.getVuelo().getId(),

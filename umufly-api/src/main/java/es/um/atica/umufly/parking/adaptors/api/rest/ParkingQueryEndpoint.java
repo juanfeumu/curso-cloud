@@ -16,7 +16,9 @@ import es.um.atica.umufly.parking.application.usecase.listarparking.ListaParking
 import es.um.atica.umufly.parking.application.usecase.obtenerparking.ObtenerParkingQuery;
 import es.um.atica.umufly.parking.application.usecase.obtenerparking.ObtenerParkingQueryHandler;
 import es.um.atica.umufly.parking.domain.model.ReservaParking;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag( name = "Parking", description = "Operacionessobreparking" )
 @RestController
 public class ParkingQueryEndpoint {
 
