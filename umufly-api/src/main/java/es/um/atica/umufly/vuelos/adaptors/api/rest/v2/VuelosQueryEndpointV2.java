@@ -22,7 +22,6 @@ import es.um.atica.umufly.vuelos.application.usecase.obtenervuelos.ObtenerVueloQ
 import es.um.atica.umufly.vuelos.domain.model.DocumentoIdentidad;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag( name = "Vuelosv2", description = "Operaciones sobre vuelos version2" )
@@ -44,13 +43,13 @@ public class VuelosQueryEndpointV2 {
 		this.authService = authService;
 	}
 
-		@ApiResponse( responseCode = "200", description = "OK" ), @ApiResponse( responseCode = "404", description = "No hay vuelos" )
-	} )
+	@ApiResponse( responseCode = "200", description = "OK" )
+	@ApiResponse( responseCode = "404", description = "No hay vuelos" )
 	@PreAuthorize( "hasRole('USER')" )
 	@GetMapping( Constants.PRIVATE_PREFIX + Constants.API_VERSION_2 + Constants.RESOURCE_VUELOS )
 	public CollectionModel<VueloDTO> getVuelos( @RequestHeader( name = "UMU-Usuario", required = true ) String usuario, @Parameter( description = "Pagina inicio" ) @RequestParam( name = "page", defaultValue = "0" ) int page,
 			@RequestParam( name = "size", defaultValue = "25" ) int size )
-			throws Exception {
+					throws Exception {
 		DocumentoIdentidad documento = authService.parseUserHeader( usuario );
 		return pagedResourcesAssembler.toModel( listaVuelosQueryHandler.handle( ListaVuelosQuery.of( documento, page, size ) ), vuelosModelAssemblerV2 );
 	}

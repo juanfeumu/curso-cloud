@@ -1,5 +1,6 @@
 package es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity;
 
+import es.um.atica.umufly.shared.adaptors.persistence.jpa.entity.TipoDocumentoEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

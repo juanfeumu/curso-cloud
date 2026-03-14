@@ -1,4 +1,4 @@
-package es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity;
+package es.um.atica.umufly.shared.adaptors.persistence.jpa.entity;
 
 public enum TipoDocumentoEnum {
 	/**

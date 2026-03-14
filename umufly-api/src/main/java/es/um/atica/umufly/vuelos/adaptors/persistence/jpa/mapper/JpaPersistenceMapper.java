@@ -3,6 +3,7 @@ package es.um.atica.umufly.vuelos.adaptors.persistence.jpa.mapper;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import es.um.atica.umufly.shared.adaptors.persistence.jpa.entity.TipoDocumentoEnum;
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.ClaseAsientoReservaEnum;
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.EstadoReservaVueloEnum;
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.EstadoVueloEnum;
@@ -10,7 +11,6 @@ import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.ReservaVueloEnt
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.ReservaVueloPasajeroEntity;
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.ReservaVueloPasajeroViewEntity;
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.ReservaVueloViewEntity;
-import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.TipoDocumentoEnum;
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.TipoVueloEnum;
 import es.um.atica.umufly.vuelos.adaptors.persistence.jpa.entity.VueloExtViewEntity;
 import es.um.atica.umufly.vuelos.domain.model.Avion;
