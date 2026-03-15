@@ -1,4 +1,4 @@
-package es.um.atica.umufly.paquetes.adaptors.persistence.jpa;
+package es.um.atica.umufly.paquetes.adaptors.persistence.jpa.entity;
 
 import java.util.Objects;
 
@@ -46,7 +46,7 @@ public class UsuarioEnvioEntity {
 	@NotNull
 	@Column( name = "tipo_participante", nullable = false, length = 20 )
 	@Enumerated( value = EnumType.STRING )
-	private TipoParticipante tipoParticipante;
+	private TipoParticipanteEnum tipoParticipante;
 
 	public String getIdParticipante() {
 		return idParticipante;
@@ -104,11 +104,11 @@ public class UsuarioEnvioEntity {
 		this.telefono = telefono;
 	}
 
-	public String getTipoParticipante() {
+	public TipoParticipanteEnum getTipoParticipante() {
 		return tipoParticipante;
 	}
 
-	public void setTipoParticipante( String tipoParticipante ) {
+	public void setTipoParticipante( TipoParticipanteEnum tipoParticipante ) {
 		this.tipoParticipante = tipoParticipante;
 	}
 

@@ -10,7 +10,7 @@ public class EnvioPaquete {
 	private UsuarioEnvio destinatario;
 	private DatosPaquete paquete;
 	private UUID idSeguimiento;
-	private Double importe;
+	private ImporteEnvioPaquete importe;
 	private EstadoEnvio estado;
 
 	public UUID getIdEnvio() {
@@ -37,7 +37,7 @@ public class EnvioPaquete {
 		return idSeguimiento;
 	}
 
-	public Double getImporte() {
+	public ImporteEnvioPaquete getImporte() {
 		return importe;
 	}
 
@@ -45,7 +45,7 @@ public class EnvioPaquete {
 		return estado;
 	}
 
-	private EnvioPaquete( UUID idEnvio, UUID idVuelo, UsuarioEnvio remitente, UsuarioEnvio destinatario, DatosPaquete paquete, UUID idSeguimiento, Double importe, EstadoEnvio estado ) {
+	private EnvioPaquete( UUID idEnvio, UUID idVuelo, UsuarioEnvio remitente, UsuarioEnvio destinatario, DatosPaquete paquete, UUID idSeguimiento, ImporteEnvioPaquete importe, EstadoEnvio estado ) {
 		this.idEnvio = idEnvio;
 		this.idVuelo = idVuelo;
 		this.remitente = remitente;
@@ -56,7 +56,7 @@ public class EnvioPaquete {
 		this.estado = estado;
 	}
 
-	public static EnvioPaquete of( UUID idEnvio, UUID idVuelo, UsuarioEnvio remitente, UsuarioEnvio destinatario, DatosPaquete paquete, UUID idSeguimiento, Double importe, EstadoEnvio estado ) {
+	public static EnvioPaquete of( UUID idEnvio, UUID idVuelo, UsuarioEnvio remitente, UsuarioEnvio destinatario, DatosPaquete paquete, UUID idSeguimiento, ImporteEnvioPaquete importe, EstadoEnvio estado ) {
 		return new EnvioPaquete( idEnvio, idVuelo, remitente, destinatario, paquete, idSeguimiento, importe, estado );
 	}
 
@@ -75,12 +75,18 @@ public class EnvioPaquete {
 		}
 		UUID idEnvio = UUID.randomUUID();
 		UUID idSeguimiento = UUID.randomUUID();
-		double importe = paquete.peso() * TarifaEnvio.ofIsFragil( paquete.fragil() ).getImporteKilo();
 		EstadoEnvio estado = EstadoEnvio.ENTREGADO;
 
 		// Aqui debemos persistir el envio del paquete
 
-		return EnvioPaquete.of( idEnvio, idVuelo, remitente, destinatario, paquete, idSeguimiento, importe, estado );
+		return EnvioPaquete.of( idEnvio, idVuelo, remitente, destinatario, paquete, idSeguimiento, null, estado );
+	}
+
+	public void calcularImporte( TarifaEnvio tarifaEnvio ) {
+		if ( tarifaEnvio == null ) {
+			throw new IllegalArgumentException( "Debe indicar una tarifa a aplicar" );
+		}
+		this.importe = new ImporteEnvioPaquete( paquete.peso() * TarifaEnvio.ofIsFragil( paquete.fragil() ).getImporteKilo() );
 	}
 
 }

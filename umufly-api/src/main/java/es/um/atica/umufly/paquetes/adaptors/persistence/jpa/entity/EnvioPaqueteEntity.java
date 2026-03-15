@@ -1,11 +1,12 @@
-package es.um.atica.umufly.paquetes.adaptors.persistence.jpa;
+package es.um.atica.umufly.paquetes.adaptors.persistence.jpa.entity;
 
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -47,13 +48,14 @@ public class EnvioPaqueteEntity {
 	private String idSeguimiento;
 
 	@NotNull
-	@Column( name = "importe_envio", nullable = false, precision = 10, scale = 2 )
-	private BigDecimal importeEnvio;
+	@Column( name = "importe_envio", nullable = false )
+	private Double importeEnvio;
 
 	@NotNull
 	@Size( max = 20 )
 	@Column( name = "estado", nullable = false, length = 20 )
-	private String estado;
+	@Enumerated( value = EnumType.STRING )
+	private EstadoEnvioEnum estado;
 
 	public String getIdEnvio() {
 		return idEnvio;
@@ -103,19 +105,19 @@ public class EnvioPaqueteEntity {
 		this.idSeguimiento = idSeguimiento;
 	}
 
-	public BigDecimal getImporteEnvio() {
+	public Double getImporteEnvio() {
 		return importeEnvio;
 	}
 
-	public void setImporteEnvio( BigDecimal importeEnvio ) {
+	public void setImporteEnvio( Double importeEnvio ) {
 		this.importeEnvio = importeEnvio;
 	}
 
-	public String getEstado() {
+	public EstadoEnvioEnum getEstado() {
 		return estado;
 	}
 
-	public void setEstado( String estado ) {
+	public void setEstado( EstadoEnvioEnum estado ) {
 		this.estado = estado;
 	}
 

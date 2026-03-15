@@ -1,8 +1,13 @@
 package es.um.atica.umufly.paquetes.domain.model;
 
-public record DatosPaquete( String descripcion, Double peso, Boolean fragil ) {
+import java.util.UUID;
+
+public record DatosPaquete( UUID idPaquete, String descripcion, Double peso, Boolean fragil ) {
 
 	public DatosPaquete {
+		if ( idPaquete == null || descripcion.isBlank() ) {
+			throw new IllegalArgumentException( "El idPaquete no puede ser nula" );
+		}
 		if ( descripcion == null || descripcion.isBlank() ) {
 			throw new IllegalArgumentException( "La descripción no puede ser nula" );
 		}
